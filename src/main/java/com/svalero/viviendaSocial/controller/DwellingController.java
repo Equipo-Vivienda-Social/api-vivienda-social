@@ -25,10 +25,10 @@ public class DwellingController {
     private ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity<Dwelling> addDwelling(@Valid @RequestBody DwellingInDTO dwellingInDTO) {
-        Dwelling dwelling = modelMapper.map(dwellingInDTO, Dwelling.class);
+    public ResponseEntity<Dwelling> addDwelling(@Valid @RequestBody Dwelling dwelling) {
+
         Dwelling createdDwelling = dwellingService.save(dwelling);
-        return new ResponseEntity<>(modelMapper.map(createdDwelling, Dwelling.class), HttpStatus.CREATED);
+        return new ResponseEntity<>(createdDwelling, HttpStatus.CREATED);
     }
 
     @GetMapping
