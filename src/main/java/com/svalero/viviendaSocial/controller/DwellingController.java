@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/dwellings")
@@ -26,10 +25,10 @@ public class DwellingController {
     private ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity<DwellingOutDTO> addDwelling(@Valid @RequestBody DwellingInDTO dwellingInDTO) {
+    public ResponseEntity<Dwelling> addDwelling(@Valid @RequestBody DwellingInDTO dwellingInDTO) {
         Dwelling dwelling = modelMapper.map(dwellingInDTO, Dwelling.class);
         Dwelling createdDwelling = dwellingService.save(dwelling);
-        return new ResponseEntity<>(modelMapper.map(createdDwelling, DwellingOutDTO.class), HttpStatus.CREATED);
+        return new ResponseEntity<>(modelMapper.map(createdDwelling, Dwelling.class), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -38,32 +37,32 @@ public class DwellingController {
             @RequestParam(required = false) String type,
             @RequestParam(required = false) Integer room,
             @RequestParam(required = false) Boolean available) {
-        List<DwellingOutDTO> allDwellings = dwellingService.findAll(city, type,room,available);
+        List<DwellingOutDTO> allDwellings = dwellingService.findAll(city, type, room, available);
 
         return ResponseEntity.ok(allDwellings);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DwellingOutDTO> getDwellingById(@PathVariable long id) {
+    public ResponseEntity<Dwelling> getDwellingById(@PathVariable long id) {
         Dwelling dwelling = dwellingService.findById(id);
-        return new ResponseEntity<>(modelMapper.map(dwelling, DwellingOutDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(dwelling, Dwelling.class), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DwellingOutDTO> updateDwelling(
+    public ResponseEntity<Dwelling> updateDwelling(
             @PathVariable long id,
             @Valid @RequestBody DwellingInDTO dwellingInDTO) {
         Dwelling dwellingDetails = modelMapper.map(dwellingInDTO, Dwelling.class);
         Dwelling updatedDwelling = dwellingService.update(id, dwellingDetails);
-        return new ResponseEntity<>(modelMapper.map(updatedDwelling, DwellingOutDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(updatedDwelling, Dwelling.class), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<DwellingOutDTO> patchDwelling(
+    public ResponseEntity<Dwelling> patchDwelling(
             @PathVariable long id,
             @RequestBody Map<String, Object> updates) {
         Dwelling updatedDwelling = dwellingService.patch(id, updates);
-        return new ResponseEntity<>(modelMapper.map(updatedDwelling, DwellingOutDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(updatedDwelling, Dwelling.class), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
