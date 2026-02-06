@@ -26,6 +26,17 @@ public class GlobalExceptionHandler {
                 return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
 
+        @ExceptionHandler(ApplicantNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleApplicantNotFoundException(
+                        ApplicantNotFoundException ex, HttpServletRequest request) {
+                ErrorResponse errorResponse = new ErrorResponse(
+                                LocalDateTime.now(),
+                                HttpStatus.NOT_FOUND.value(),
+                                ex.getMessage(),
+                                request.getRequestURI());
+                return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
         @ExceptionHandler(MethodArgumentNotValidException.class)
         public ResponseEntity<Map<String, String>> handleValidationExceptions(
                         MethodArgumentNotValidException ex) {

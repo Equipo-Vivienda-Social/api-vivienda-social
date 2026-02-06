@@ -16,6 +16,8 @@ public class DwellingService {
     @Autowired
     private DwellingRepository repository;
     @Autowired
+    private com.svalero.viviendaSocial.repository.ApplicantRepository applicantRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
     public Dwelling patch(Long id, java.util.Map<String, Object> updates) {
@@ -45,7 +47,8 @@ public class DwellingService {
             allDwellings = repository.findAll();
         }
 
-        return modelMapper.map(allDwellings, new TypeToken<List<DwellingOutDTO>>() {}.getType());
+        return modelMapper.map(allDwellings, new TypeToken<List<DwellingOutDTO>>() {
+        }.getType());
     }
 
     public Dwelling findById(Long id) {
@@ -70,5 +73,10 @@ public class DwellingService {
 
     public void delete(Long id) {
         repository.delete(findById(id));
+    }
+
+    public List<com.svalero.viviendaSocial.domain.Applicant> getApplicants(long id) {
+        findById(id); // Ensure dwelling exists
+        return applicantRepository.findByDwellingId(id);
     }
 }
