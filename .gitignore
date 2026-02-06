@@ -19,6 +19,10 @@ target/
 *.iml
 *.ipr
 
+### Ignorar el fichero de configuracion de Docker
+docker-compose.dev.yaml
+
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
