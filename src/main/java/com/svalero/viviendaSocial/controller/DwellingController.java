@@ -1,6 +1,5 @@
 package com.svalero.viviendaSocial.controller;
 
-import com.svalero.viviendaSocial.dto.DwellingInDTO;
 import com.svalero.viviendaSocial.dto.DwellingOutDTO;
 import com.svalero.viviendaSocial.domain.Dwelling;
 import com.svalero.viviendaSocial.service.DwellingService;
@@ -51,9 +50,8 @@ public class DwellingController {
     @PutMapping("/{id}")
     public ResponseEntity<Dwelling> updateDwelling(
             @PathVariable long id,
-            @Valid @RequestBody DwellingInDTO dwellingInDTO) {
-        Dwelling dwellingDetails = modelMapper.map(dwellingInDTO, Dwelling.class);
-        Dwelling updatedDwelling = dwellingService.update(id, dwellingDetails);
+            @Valid @RequestBody Dwelling dwelling) {
+        Dwelling updatedDwelling = dwellingService.update(id, dwelling);
         return new ResponseEntity<>(modelMapper.map(updatedDwelling, Dwelling.class), HttpStatus.OK);
     }
 
