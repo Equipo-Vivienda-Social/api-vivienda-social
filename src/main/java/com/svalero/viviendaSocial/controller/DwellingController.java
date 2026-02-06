@@ -68,4 +68,10 @@ public class DwellingController {
         dwellingService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{id}/applicants")
+    public ResponseEntity<List<com.svalero.viviendaSocial.domain.Applicant>> getApplicants(@PathVariable long id) {
+        List<com.svalero.viviendaSocial.domain.Applicant> applicants = dwellingService.getApplicants(id);
+        return ResponseEntity.ok(applicants);
+    }
 }
