@@ -38,11 +38,9 @@ public class DwellingController {
             @RequestParam(required = false) String type,
             @RequestParam(required = false) Integer room,
             @RequestParam(required = false) Boolean available) {
-        List<Dwelling> dwellings = dwellingService.findAll(city, type, room, available);
-        List<DwellingOutDTO> dwellingsDTO = dwellings.stream()
-                .map(dwelling -> modelMapper.map(dwelling, DwellingOutDTO.class))
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(dwellingsDTO, HttpStatus.OK);
+        List<DwellingOutDTO> allDwellings = dwellingService.findAll(city, type,room,available);
+
+        return ResponseEntity.ok(allDwellings);
     }
 
     @GetMapping("/{id}")

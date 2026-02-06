@@ -9,6 +9,9 @@ import java.util.List;
 @Repository
 public interface DwellingRepository extends JpaRepository<Dwelling, Long> {
     List<Dwelling> findByCity(String city);
+    List<Dwelling> findAll();
+    List<Dwelling> findByType(String type);
+    List<Dwelling> findByRoom(int room);
 
     List<Dwelling> findByAvailable(boolean available);
 }
