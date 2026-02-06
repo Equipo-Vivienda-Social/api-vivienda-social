@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicantOutDTO {
+    private long id;
     private String name;
     private String surname;
     private String dni;

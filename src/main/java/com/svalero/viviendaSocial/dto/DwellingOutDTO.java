@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DwellingOutDTO {
+    private long id;
     private String city;
     private String type;
     private int room;
