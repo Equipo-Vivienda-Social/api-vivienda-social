@@ -1,5 +1,6 @@
 package com.svalero.viviendaSocial.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,6 @@ public class Dwelling {
     private LocalDate buildDate;
 
     @OneToMany(mappedBy = "dwelling", cascade = CascadeType.REMOVE)
-    @Column
+    @JsonBackReference
     private List<Applicant> applicants;
 }

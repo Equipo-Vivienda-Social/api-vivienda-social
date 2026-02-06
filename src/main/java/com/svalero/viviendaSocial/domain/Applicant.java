@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -34,5 +35,4 @@ public class Applicant {
     @ManyToOne
     @JoinColumn(name = "dwelling_id")
     private Dwelling dwelling;
-
 }

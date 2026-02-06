@@ -1,8 +1,11 @@
 package com.svalero.viviendaSocial.service;
 
 import com.svalero.viviendaSocial.domain.Dwelling;
+import com.svalero.viviendaSocial.dto.DwellingOutDTO;
 import com.svalero.viviendaSocial.repository.DwellingRepository;
 import com.svalero.viviendaSocial.exception.DwellingNotFoundException;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -12,6 +15,8 @@ public class DwellingService {
 
     @Autowired
     private DwellingRepository repository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public Dwelling patch(Long id, java.util.Map<String, Object> updates) {
         Dwelling dwelling = findById(id);
@@ -25,24 +30,22 @@ public class DwellingService {
         return repository.save(dwelling);
     }
 
-    public List<Dwelling> findAll(String city, String type, Integer room, Boolean available) {
-        Dwelling probe = new Dwelling();
-        if (city != null)
-            probe.setCity(city);
-        if (type != null)
-            probe.setType(type);
-        if (room != null)
-            probe.setRoom(room);
-        if (available != null)
-            probe.setAvailable(available);
+    public List<DwellingOutDTO> findAll(String city, String type, Integer room, Boolean available) {
+        List<Dwelling> allDwellings;
 
-        org.springframework.data.domain.ExampleMatcher matcher = org.springframework.data.domain.ExampleMatcher
-                .matching()
-                .withIgnoreNullValues()
-                .withStringMatcher(org.springframework.data.domain.ExampleMatcher.StringMatcher.CONTAINING)
-                .withIgnoreCase();
+        if (type != null && !type.isEmpty()) {
+            allDwellings = repository.findByType(type);
+        } else if (available != null && available) {
+            allDwellings = repository.findByAvailable(available);
+        } else if (city != null && !type.isEmpty()) {
+            allDwellings = repository.findByCity(city);
+        } else if (room != null) {
+            allDwellings = repository.findByRoom(room);
+        } else {
+            allDwellings = repository.findAll();
+        }
 
-        return repository.findAll(org.springframework.data.domain.Example.of(probe, matcher));
+        return modelMapper.map(allDwellings, new TypeToken<List<DwellingOutDTO>>() {}.getType());
     }
 
     public Dwelling findById(Long id) {
