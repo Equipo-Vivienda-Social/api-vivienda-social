@@ -32,7 +32,7 @@ public class Applicant {
     private boolean employed;
 
     @ManyToOne
-    @JoinColumn(name = "applicant_id")
+    @JoinColumn(name = "dwelling_id")
     private Dwelling dwelling;
 
 }
