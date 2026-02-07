@@ -1,7 +1,10 @@
 package com.svalero.viviendaSocial.controller;
 
+import com.svalero.viviendaSocial.domain.Applicant;
+import com.svalero.viviendaSocial.dto.DwellingInDto;
 import com.svalero.viviendaSocial.dto.DwellingOutDTO;
 import com.svalero.viviendaSocial.domain.Dwelling;
+import com.svalero.viviendaSocial.service.ApplicantService;
 import com.svalero.viviendaSocial.service.DwellingService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -10,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,10 +27,14 @@ public class DwellingController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @PostMapping
-    public ResponseEntity<Dwelling> addDwelling(@Valid @RequestBody Dwelling dwelling) {
+    @Autowired
+    private ApplicantService applicantService;
 
-        Dwelling createdDwelling = dwellingService.save(dwelling);
+    @PostMapping
+    public ResponseEntity<Dwelling> addDwelling(@Valid @RequestBody DwellingInDto dwellingInDto) {
+
+        List<Applicant> applicants = applicantService.findAllApplicantsById(dwellingInDto.getApplicantsIds());
+        Dwelling createdDwelling = dwellingService.save(dwellingInDto ,applicants);
         return new ResponseEntity<>(createdDwelling, HttpStatus.CREATED);
     }
 

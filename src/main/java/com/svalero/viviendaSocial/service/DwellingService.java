@@ -1,6 +1,8 @@
 package com.svalero.viviendaSocial.service;
 
+import com.svalero.viviendaSocial.domain.Applicant;
 import com.svalero.viviendaSocial.domain.Dwelling;
+import com.svalero.viviendaSocial.dto.DwellingInDto;
 import com.svalero.viviendaSocial.dto.DwellingOutDTO;
 import com.svalero.viviendaSocial.repository.DwellingRepository;
 import com.svalero.viviendaSocial.exception.DwellingNotFoundException;
@@ -56,7 +58,11 @@ public class DwellingService {
                 .orElseThrow(() -> new DwellingNotFoundException(id));
     }
 
-    public Dwelling save(Dwelling dwelling) {
+    public Dwelling save(DwellingInDto dwellingInDto, List<Applicant> applicants) {
+        Dwelling dwelling = new Dwelling();
+        dwelling.setApplicants(applicants);
+
+        modelMapper.map(dwellingInDto, dwelling);
         return repository.save(dwelling);
     }
 
