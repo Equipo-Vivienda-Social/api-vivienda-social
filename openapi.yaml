@@ -1,0 +1,448 @@
+openapi: 3.0.0
+info:
+  title: Social Housing API
+  description: API for managing social housing applications and housing stock.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+tags:
+  - name: Applicants
+    description: Operations related to housing applicants
+  - name: Dwellings
+    description: Operations related to housing stock
+
+paths:
+  /applicants:
+    get:
+      tags:
+        - Applicants
+      summary: Get all applicants
+      parameters:
+        - name: salary
+          in: query
+          schema:
+            type: integer
+        - name: familyMembers
+          in: query
+          schema:
+            type: integer
+        - name: employed
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: List of applicants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantOutDTO'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+        - Applicants
+      summary: Add a new applicant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantInDTO'
+            example:
+              name: "john"
+              surname: "j"
+              dni: "12345678Z"
+              birthDate: "2019-08-24"
+              salary: 1600
+              familyMembers: 2
+              employed: true
+              dwellings:
+                - dwellingId: 1
+      responses:
+        '201':
+          description: Applicant created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Applicant'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /applicants/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags:
+        - Applicants
+      summary: Get applicant by ID
+      responses:
+        '200':
+          description: Applicant data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Applicant'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      tags:
+        - Applicants
+      summary: Update applicant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Applicant'
+            example:
+              name: "joseph"
+              surname: "john"
+              dni: "12346547A"
+              birthDate: "2019-08-24"
+              salary: 1000
+              familyMembers: 10
+              employed: true
+              dwellings:
+                - dwellingId: 1
+      responses:
+        '200':
+          description: Applicant updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Applicant'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+        - Applicants
+      summary: Delete applicant
+      responses:
+        '204':
+          description: Applicant deleted
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /dwellings:
+    get:
+      tags:
+        - Dwellings
+      summary: Get all dwellings
+      parameters:
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: room
+          in: query
+          schema:
+            type: integer
+        - name: available
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: List of dwellings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DwellingOutDTO'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+        - Dwellings
+      summary: Add a new dwelling
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DwellingInDto'
+            example:
+              street: "main street"
+              city: "the city"
+              type: "apartment"
+              room: 3
+              available: true
+              buildDate: "2019-08-24"
+              applicantsIds:
+                - 1
+      responses:
+        '201':
+          description: Dwelling created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dwelling'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /dwellings/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags:
+        - Dwellings
+      summary: Get dwelling by ID
+      responses:
+        '200':
+          description: Dwelling data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dwelling'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      tags:
+        - Dwellings
+      summary: Update dwelling
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dwelling'
+            example:
+              street: "my street"
+              city: "my city"
+              type: "apartment"
+              room: 3
+              available: true
+              buildDate: "2019-08-24"
+              applicantsIds:
+                - 1
+      responses:
+        '200':
+          description: Dwelling updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dwelling'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+        - Dwellings
+      summary: Delete dwelling
+      responses:
+        '204':
+          description: Dwelling deleted
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+components:
+  schemas:
+    Applicant:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+        surname:
+          type: string
+        dni:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        salary:
+          type: integer
+        familyMembers:
+          type: integer
+        employed:
+          type: boolean
+        dwelling:
+          $ref: '#/components/schemas/Dwelling'
+        dwellings:
+          type: array
+          items:
+            type: object
+            properties:
+              dwellingId:
+                type: integer
+                format: int64
+
+    ApplicantInDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        dni:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        salary:
+          type: integer
+        familyMembers:
+          type: integer
+        employed:
+          type: boolean
+        dwellings:
+          type: array
+          items:
+            type: object
+            properties:
+              dwellingId:
+                type: integer
+                format: int64
+
+    ApplicantOutDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        surname:
+          type: string
+        dni:
+          type: string
+        salary:
+          type: integer
+        familyMembers:
+          type: integer
+        employed:
+          type: boolean
+
+    Dwelling:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        street:
+          type: string
+        city:
+          type: string
+        type:
+          type: string
+        room:
+          type: integer
+        available:
+          type: boolean
+        buildDate:
+          type: string
+          format: date
+        applicants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Applicant'
+
+    DwellingInDto:
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        type:
+          type: string
+        room:
+          type: integer
+        available:
+          type: boolean
+        buildDate:
+          type: string
+          format: date
+        applicantsIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    DwellingOutDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        city:
+          type: string
+        type:
+          type: string
+        room:
+          type: integer
+        available:
+          type: boolean
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        message:
+          type: string
+        path:
+          type: string
+
+  responses:
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ValidationError:
+      description: Validation error in input data
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
