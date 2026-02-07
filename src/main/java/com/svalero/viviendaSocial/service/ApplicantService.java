@@ -32,22 +32,15 @@ public class ApplicantService {
         return repository.save(applicant);
     }
 
-    public List<ApplicantOutDTO> findAll(String name, String surname, String dni, Integer salary, Integer familyMembers,
-            Boolean employed) {
+    public List<ApplicantOutDTO> findAll(Integer salary, Integer familyMembers, Boolean employed) {
         List<Applicant> allApplicants;
 
-        if (name != null && !name.isEmpty()) {
-            allApplicants = repository.findByName(name);
-        } else if (surname != null && !surname.isEmpty()) {
-            allApplicants = repository.findBySurname(surname);
-        } else if (dni != null && !dni.isEmpty()) {
-            allApplicants = repository.findByDni(dni);
-        } else if (salary != null) {
-            allApplicants = repository.findBySalary(salary);
+         if (salary != null) {
+            allApplicants = repository.findBySalaryGreaterThanEqualOrderBySalaryAsc(salary);
         } else if (familyMembers != null) {
             allApplicants = repository.findByFamilyMembers(familyMembers);
-        } else if (employed != null) {
-            allApplicants = repository.findByEmployed(employed);
+        } else if (employed != null && employed) {
+            allApplicants = repository.findByEmployedTrue();
         } else {
             allApplicants = repository.findAll();
         }

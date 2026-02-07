@@ -40,11 +40,10 @@ public class DwellingController {
 
     @GetMapping
     public ResponseEntity<List<DwellingOutDTO>> getAllDwellings(
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) String type,
-            @RequestParam(required = false) Integer room,
-            @RequestParam(required = false) Boolean available) {
-        List<DwellingOutDTO> allDwellings = dwellingService.findAll(city, type, room, available);
+            @RequestParam(value = "city",required = false) String city,
+            @RequestParam(value = "room",required = false) Integer room,
+            @RequestParam(value = "available",required = false) Boolean available) {
+        List<DwellingOutDTO> allDwellings = dwellingService.findAll(city, room, available);
 
         return ResponseEntity.ok(allDwellings);
     }
