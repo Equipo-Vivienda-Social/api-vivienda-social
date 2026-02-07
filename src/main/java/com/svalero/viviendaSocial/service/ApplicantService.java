@@ -61,6 +61,10 @@ public class ApplicantService {
                 .orElseThrow(() -> new ApplicantNotFoundException(id));
     }
 
+    public List<Applicant> findAllApplicantsById(List<Long> ids) {
+        return (List<Applicant>) repository.findAllById(ids);
+    }
+
     public Applicant save(Applicant applicant) {
         return repository.save(applicant);
     }
