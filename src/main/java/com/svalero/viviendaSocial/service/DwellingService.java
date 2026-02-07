@@ -37,8 +37,12 @@ public class DwellingService {
     public List<DwellingOutDTO> findAll(String city, Integer room, Boolean available) {
         List<Dwelling> allDwellings;
 
-         if (available != null && available) {
-            allDwellings = repository.findByAvailableTrue();
+         if (available != null) {
+             if (available) {
+                 allDwellings = repository.findByAvailableTrue();
+             } else {
+                 allDwellings = repository.findByAvailableFalse();
+             }
         } else if (city != null && !city.isEmpty()) {
             allDwellings = repository.findByCity(city);
         } else if (room != null) {

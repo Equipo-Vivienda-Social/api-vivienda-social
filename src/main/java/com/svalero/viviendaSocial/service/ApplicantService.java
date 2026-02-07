@@ -39,9 +39,13 @@ public class ApplicantService {
             allApplicants = repository.findBySalaryGreaterThanEqualOrderBySalaryAsc(salary);
         } else if (familyMembers != null) {
             allApplicants = repository.findByFamilyMembers(familyMembers);
-        } else if (employed != null && employed) {
-            allApplicants = repository.findByEmployedTrue();
-        } else {
+        } else if (employed != null) {
+             if (employed) {
+                 allApplicants = repository.findByEmployedTrue();
+             } else {
+                 allApplicants = repository.findByEmployedFalse();
+             }
+         } else {
             allApplicants = repository.findAll();
         }
 

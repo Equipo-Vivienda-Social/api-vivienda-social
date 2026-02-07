@@ -12,5 +12,5 @@ public interface DwellingRepository extends JpaRepository<Dwelling, Long> {
     List<Dwelling> findAll();
     List<Dwelling> findByAvailableTrue();
     List<Dwelling> findByRoom(int room);
-
+    List<Dwelling> findByAvailableFalse();
 }
