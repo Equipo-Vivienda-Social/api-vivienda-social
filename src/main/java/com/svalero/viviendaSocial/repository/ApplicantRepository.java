@@ -17,4 +17,5 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
     List<Applicant> findByEmployedTrue();
 
     List<Applicant> findByDwellingId(long dwellingId);
+    List<Applicant> findByEmployedFalse();
 }
