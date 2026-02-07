@@ -5,6 +5,8 @@ import com.svalero.viviendaSocial.dto.ApplicantOutDTO;
 import com.svalero.viviendaSocial.service.ApplicantService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ public class ApplicantController {
     @Autowired
     private ModelMapper modelMapper;
 
+    private final Logger logger = LoggerFactory.getLogger(ApplicantController.class);
+
     @PostMapping
     public ResponseEntity<Applicant> addApplicant(@Valid @RequestBody Applicant applicant) {
         Applicant createdApplicant = applicantService.save(applicant);
@@ -31,9 +35,11 @@ public class ApplicantController {
 
     @GetMapping
     public ResponseEntity<List<ApplicantOutDTO>> getAllApplicants(
+
             @RequestParam(value = "salary",required = false) Integer salary,
             @RequestParam(value = "familyMembers",required = false) Integer familyMembers,
             @RequestParam(value = "employed" ,required = false) Boolean employed) {
+        logger.info("GET /applicants");
         List<ApplicantOutDTO> allApplicants = applicantService.findAll(salary, familyMembers, employed);
         return ResponseEntity.ok(allApplicants);
     }

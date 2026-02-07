@@ -8,6 +8,8 @@ import com.svalero.viviendaSocial.service.ApplicantService;
 import com.svalero.viviendaSocial.service.DwellingService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,8 @@ public class DwellingController {
     @Autowired
     private ApplicantService applicantService;
 
+    private final Logger logger = LoggerFactory.getLogger(ApplicantController.class);
+
     @PostMapping
     public ResponseEntity<Dwelling> addDwelling(@Valid @RequestBody DwellingInDto dwellingInDto) {
 
@@ -43,6 +47,7 @@ public class DwellingController {
             @RequestParam(value = "city",required = false) String city,
             @RequestParam(value = "room",required = false) Integer room,
             @RequestParam(value = "available",required = false) Boolean available) {
+        logger.info("GET /dwellings");
         List<DwellingOutDTO> allDwellings = dwellingService.findAll(city, room, available);
 
         return ResponseEntity.ok(allDwellings);

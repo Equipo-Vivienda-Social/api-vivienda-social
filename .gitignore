@@ -19,6 +19,9 @@ target/
 *.iml
 *.ipr
 
+logs
+
+
 ### Ignorar el fichero de configuracion de Docker
 docker-compose.dev.yaml
 
