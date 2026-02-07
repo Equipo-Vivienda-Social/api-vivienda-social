@@ -34,14 +34,12 @@ public class DwellingService {
         return repository.save(dwelling);
     }
 
-    public List<DwellingOutDTO> findAll(String city, String type, Integer room, Boolean available) {
+    public List<DwellingOutDTO> findAll(String city, Integer room, Boolean available) {
         List<Dwelling> allDwellings;
 
-        if (type != null && !type.isEmpty()) {
-            allDwellings = repository.findByType(type);
-        } else if (available != null && available) {
-            allDwellings = repository.findByAvailable(available);
-        } else if (city != null && !type.isEmpty()) {
+         if (available != null && available) {
+            allDwellings = repository.findByAvailableTrue();
+        } else if (city != null && !city.isEmpty()) {
             allDwellings = repository.findByCity(city);
         } else if (room != null) {
             allDwellings = repository.findByRoom(room);

@@ -31,14 +31,10 @@ public class ApplicantController {
 
     @GetMapping
     public ResponseEntity<List<ApplicantOutDTO>> getAllApplicants(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String surname,
-            @RequestParam(required = false) String dni,
-            @RequestParam(required = false) Integer salary,
-            @RequestParam(required = false) Integer familyMembers,
-            @RequestParam(required = false) Boolean employed) {
-        List<ApplicantOutDTO> allApplicants = applicantService.findAll(name, surname, dni, salary, familyMembers,
-                employed);
+            @RequestParam(value = "salary",required = false) Integer salary,
+            @RequestParam(value = "familyMembers",required = false) Integer familyMembers,
+            @RequestParam(value = "employed" ,required = false) Boolean employed) {
+        List<ApplicantOutDTO> allApplicants = applicantService.findAll(salary, familyMembers, employed);
         return ResponseEntity.ok(allApplicants);
     }
 
